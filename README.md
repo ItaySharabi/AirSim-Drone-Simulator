@@ -18,13 +18,6 @@ we uesed main while loop for simpele Actions by using the API.
 ### the main loop 
 ```
 def nav_algo(drone: Drone):
-    # global TURNING_LEFT, TURNING_RIGHT
-    # Drone's State Machine:
-    # 1. Emergency
-    # 2. Fix right wall
-    # 3. Scan surroundings
-    # 4. Move to target point
-    # 5. Return home
 
     global sim_time  # = gettime()
     battery_low = False
@@ -51,26 +44,12 @@ def nav_algo(drone: Drone):
 
         sim_time = time_last - start_time
         time_sec = int(sim_time)
-        if time_sec > time_sec_last:
-            if i % 1000 == 0:
-                print("Time now: ", float('%.1f' % sim_time))
-        if time_sec >= 60 * FLIGHT_TIME_MIN / 2:
-            battery_low = True
-        time_sec_last = time_sec
-
-        if i == 1000000:
-            i = 0
 
         front = lidars['front']
         right = lidars['right']
         left = lidars['left']
-        # down = lidars['down']
-        # x = position['x']
-        # y = position['y']
-        # z = position['z']w
-        # yaw_rate = yaw_pid.compute(front, right, target=???)
 
-        # print(f'yaw_rate output: {yaw_rate}')
+   
         if front < emergency_threshold:
             print("Emergency!")
 
