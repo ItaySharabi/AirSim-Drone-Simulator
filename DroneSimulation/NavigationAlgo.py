@@ -41,52 +41,15 @@ pitch_front_pid = FrontPID(target=front_threshold)  # 0.8  =  0.7 + 0.1
 # yaw_pid = YawRatePID(target=0.0)
 # ===============================
 
-
-# לוקח מיקום הזווית פנים ואז בלולאת פור עובר על כל מעלה ובודק אם יש משהו מולו ואם לא הוא שומר את ההתחלה של ה״איזור בטוח״ עד מפגש עם משהו מולו ואז שומר את הסוף שך האיזור הבטוח, כך נשצור את המקומות האפשריים למעבר ונכניס לגרף
-def explore(drone: Drone):
-    global graph
-    node = []
-    temp_l = drone.get_lidars()
-    orientation = drone.get_orientation()
-    position = drone.get_position()
-    velocity = drone.get_velocity()
-    visited = False
-    node.append(position)
-    start_front = orientation['pitch']  # להוסיף גם את מאיפה הגענו ולסמת שביקרנו בו
-    end_front = 0
-    flag_front = True
-
-    alpha = drone.get_orientation()['yaw']
-    goal = alpha + 85
-    while alpha < goal:
-        alpha = drone.get_orientation()['yaw']
-        drone.command(roll=0, pitch=0, yaw_rate=-30, z=HEIGHT_Z_AXIS, wait=False)
-        if temp_l['front'] < INF_DISTANCE and flag_front == True:
-            flag_front = False
-            end_front = orientation['pitch']
-            node.append((visited, start_front, end_front))
-        if temp_l['front'] >= INF_DISTANCE and flag_front == False:
-            flag_front = True
-            start_front = orientation['pitch']
-        temp_l = drone.get_lidars()
-
-    graph.append(node)
-    drone.command(0, 0, 0, HEIGHT_Z_AXIS, True)  # Stop
-
-    print(f'Node: {node}')
-
-
 def emergency(drone: Drone):
     global pitch_front_pid
     print("Emergency mode!")
-    # drone.hover(wait=True)
     pitch_front_pid = FrontPID(target=emergency_threshold)
     while True:
         n_front = drone.get_lidars()['front']
         n_right = drone.get_lidars()['right']
-        # drone.move_by(x=-abs(front-0.5), y=-abs(right-0.5), z=0, wait=False)
+
         p = pitch_front_pid.compute(n_front)
-        print(f'Pitch output: {p}')
         drone.command(0, p, 0, z=HEIGHT_Z_AXIS, wait=False)
 
         if abs(n_front - emergency_threshold) < 0.05 and abs(n_right - emergency_threshold) < 0.05:
@@ -104,19 +67,6 @@ def return_home(drone: Drone):
         # נסיעה לשם
         drone.command(roll=0, pitch=0, yaw_rate=0, z=HEIGHT_Z_AXIS, wait=True)  # move to...
 
-    pass
-
-
-def get_move_vector(drone: Drone):
-    print("get_move_vector home")
-    node = graph.pop()
-    center = 0
-    for i in range(0, len(node)):  # כל עוד לא עברתי על כל הנוד
-        if node[i] == False:
-            node[i] = True
-            return center  # התחלה פחות סוף האיזור הבטוח חלקי 2) וכל זה נוסיף למבט שלי (צריך לראות ערכים מוחלטים וכו)
-    # אם אין נקודה שבה לא היינו (כלומר הכל כבר true ) אז תחזור אחורה מאיפה שבאנו
-    return 180  # return back
 
 
 def fly_forward(drone: Drone):
@@ -146,17 +96,10 @@ def fly_forward(drone: Drone):
 def rotate_ccw(drone: Drone):
     front, right = (drone.get_lidars()['front'],
                     drone.get_lidars()['right'])
-    alpha = degrees(atan(right/front))
-
-    # yaw_rate = yaw_pid.compute(alpha)
-    # if right < right_far_threshold:
-    # print(f'Right < right_far_threshold!!!')
 
     pitch = pitch_front_pid.compute(front)
     print(f'pitch = {pitch}')
-    # if velocity['x'] >= 0.01:
-    #     pitch = 0
-    drone.command(0, pitch, yaw_rate, HEIGHT_Z_AXIS, False)
+    drone.command(0, pitch/4, -30, HEIGHT_Z_AXIS, False)
 
 
 def nav_algo(drone: Drone):
@@ -169,7 +112,6 @@ def nav_algo(drone: Drone):
     # 5. Return home
 
     global sim_time  # = gettime()
-    # home point (node with vector)
     battery_low = False
 
     # Takeoff
