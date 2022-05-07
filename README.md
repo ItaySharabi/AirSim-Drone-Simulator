@@ -93,7 +93,7 @@ def nav_algo(drone: Drone):
         else:
             # Do mission (Explore the area)
             fly_forward(drone)
-            ```
+```
             
            ### the main loop works on 5 cases:
             1)emergency: cheak if we too close to the wall around the drone.
