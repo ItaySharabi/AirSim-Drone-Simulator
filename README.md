@@ -94,22 +94,30 @@ def nav_algo(drone: Drone):
             # Do mission (Explore the area)
             fly_forward(drone)
 ```
+
+### the main loop works on 5 cases:
+           
+1) emergency: cheak if we too close to the wall around the drone.
+2) battery: cheak if the battery is too low.
+3) front < front_threshold: cheak if the front is go to a wall 
+4) right > right_far_threshold: cheak if the drone is go out from the right wall 
+5) fly_forward: if all is works, the drone go forward.
             
-           ### the main loop works on 5 cases:
-            1)emergency: cheak if we too close to the wall around the drone.
-            2)battery: cheak if the battery is too low.
-            3)front < front_threshold: cheak if the front is go to a wall 
-            4)right > right_far_threshold: cheak if the drone is go out from the right wall 
-            5)fly_forward: if all is works, the drone go forward.
-            
-            to go forward and not to crash we Calculating tan-1(right lidar/front lidar) and that gave us the angle to be parallel to the wall.
-            we used PID for that and for the move forward.
+to go forward and not to crash we Calculating tan-1(right lidar/front lidar) and that gave us the angle to be parallel to the wall.
+we used PID for that and for the move forward.
 
 
 ![Screenshot 2022-05-08 at 00 34 56](https://user-images.githubusercontent.com/66851296/167272377-f487109a-4c64-4aa8-b96f-2de5d9a9eeb2.png)
 
 
+to know were we hane been, we used func "explore" in every time we in crossroads.
+in "explore" we spin around and cheak with the lidars if there is obstacle, if not we keep the start place until we see obstacle,
+then we add to the node:
+1) position
+2) visited, start and end vector to all the obstacles
+and add to the graph.
 
+![Screenshot 2022-05-08 at 00 49 35](https://user-images.githubusercontent.com/66851296/167272984-05cd7572-fc73-440c-88e0-c4dc521f60d0.png)
 
 
 
