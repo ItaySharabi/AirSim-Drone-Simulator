@@ -37,7 +37,7 @@ graph = []  # Drone's waypoints - list of nodes (Waypoints)
 
 # === Drone's PID Controllers ===
 # roll_pid = RightWallPID(target=right_far_threshold)
-pitch_front_pid = FrontPID(target=0.3)  # 0.8  =  0.7 + 0.1
+pitch_front_pid = FrontPID(target=front_threshold)  # 0.8  =  0.7 + 0.1
 # yaw_pid = YawRatePID(target=0.0)
 # ===============================
 
