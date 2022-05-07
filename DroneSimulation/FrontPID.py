@@ -1,5 +1,5 @@
-MAX_PITCH = -0.33  # pitch angel
-MIN_PITCH = 0.33
+MAX_PITCH = -2.0  # pitch angel
+MIN_PITCH = 2.0
 
 # A good set of P-D Constants!
 
