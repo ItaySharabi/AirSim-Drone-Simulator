@@ -148,7 +148,7 @@ def rotate_ccw(drone: Drone):
                     drone.get_lidars()['right'])
     alpha = degrees(atan(right/front))
 
-    yaw_rate = yaw_pid.compute(alpha)
+    # yaw_rate = yaw_pid.compute(alpha)
     # if right < right_far_threshold:
     # print(f'Right < right_far_threshold!!!')
 
@@ -184,7 +184,7 @@ def nav_algo(drone: Drone):
     start_time = time.time()
     time_sec_last = 0
     lidars = drone.get_lidars()
-    yaw_pid = YawRatePID()
+    # yaw_pid = YawRatePID()
     # explore(drone)
     while True:
         lidars = drone.get_lidars()
