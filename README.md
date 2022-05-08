@@ -14,6 +14,7 @@ For this purpose, AirSim also exposes APIs to retrieve data and control vehicles
 Our goal is to make the simulated drone fly around in a safe way around any given map using 
 a Navigation algorithm and Obstacle avoidance logic.
 ### Drone's Control Loop:
+
 ```
 def nav_algo(drone: Drone):
 
@@ -77,9 +78,11 @@ def nav_algo(drone: Drone):
 to go forward and not to crash we Calculating tan-1(right lidar/front lidar) and that gave us the angle to be parallel to the wall.
 we used PID for that and for the move forward.
 
+### PID - Proportional, Integral and Derivitive errors:
+For a "cleaner" flight, we've implemented a PID Controller.
+A PID Controller calculates the drone's desired angles for movement
 
 ![Screenshot 2022-05-08 at 00 34 56](https://user-images.githubusercontent.com/66851296/167272377-f487109a-4c64-4aa8-b96f-2de5d9a9eeb2.png)
-
 
 To know where we have been, we used func "explore" in every time we in crossroads.
 in "explore" we spin around and cheak with the lidars if there is obstacle, if not we keep the start place until we see obstacle,
