@@ -11,8 +11,8 @@ For this purpose, AirSim also exposes APIs to retrieve data and control vehicles
 
 ## 
 ### The Simulation
-Our goal is to make the simulated drone fly around in a safe way around any given map using 
-a Navigation algorithm and Obstacle avoidance logic.
+Our goal is to make the simulated drone fly in a safe manner around any given map using 
+a Navigation algorithm, PID Controllers (For pitch and yaw angels) and Obstacle avoidance logic.
 ### Drone's Control Loop:
 
 ```
@@ -93,6 +93,10 @@ then we add to the node:
 
 ![Screenshot 2022-05-08 at 00 49 35](https://user-images.githubusercontent.com/66851296/167272984-05cd7572-fc73-440c-88e0-c4dc521f60d0.png)
 
+## More:
+
+### Takeoff
+![airsim](https://user-images.githubusercontent.com/63110245/167283908-88d859c5-c353-4441-adb7-fe811b0fafe2.png)
 
 
 
